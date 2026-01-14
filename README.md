@@ -23,6 +23,7 @@ Example
     "MaxTransactionAmount": 10000
   }
 }
+
 Registered in DI container:
  services.Configure<MoneyTransferSettings>(
     configuration.GetSection(MoneyTransferSettings.SectionName));
