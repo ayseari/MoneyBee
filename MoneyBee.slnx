@@ -7,6 +7,9 @@
     <Project Path="src/Auth/MoneyBee.Auth.Domain/MoneyBee.Auth.Domain.csproj" />
     <Project Path="src/Auth/MoneyBee.Auth.Infrastructure/MoneyBee.Auth.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/src/Auth/Tests/">
+    <Project Path="src/Auth/Tests/MoneyBee.Auth.Test/MoneyBee.Auth.Test.csproj" Id="6ddc1023-6a28-49ac-85aa-ce43ef923d9d" />
+  </Folder>
   <Folder Name="/src/Common/">
     <Project Path="src/Common/MoneyBee.Common/MoneyBee.Common.csproj" />
   </Folder>
@@ -17,6 +20,9 @@
     <Project Path="src/Customer/MoneyBee.Customer.Domain/MoneyBee.Customer.Domain.csproj" Id="45063d54-4e8f-4b07-a076-019657eff7b1" />
     <Project Path="src/Customer/MoneyBee.Customer.Infrastructure/MoneyBee.Customer.Infrastructure.csproj" Id="03cf8aa8-2935-4a63-9625-7eb7a2e49c4e" />
   </Folder>
+  <Folder Name="/src/Customer/Tests/">
+    <Project Path="src/Customer/Tests/MoneyBee.Customer.Test/MoneyBee.Customer.Test.csproj" Id="c35aae68-fb48-44e1-8d7a-23aecd980fd2" />
+  </Folder>
   <Folder Name="/src/Infrastructure/">
     <Project Path="src/Infrastructure/MoneyBee.External.Api.Client/MoneyBee.External.Api.Client.csproj" Id="cd503579-8cc8-421e-9464-65ecdc7c1f32" />
   </Folder>
@@ -25,5 +31,8 @@
     <Project Path="src/Transfer/MoneyBee.Transfer.Application/MoneyBee.Transfer.Application.csproj" Id="eb6e31f6-5655-49c3-b93e-df2929e52252" />
     <Project Path="src/Transfer/MoneyBee.Transfer.Domain/MoneyBee.Transfer.Domain.csproj" Id="ba7bb295-1ceb-45c5-93c4-f12173a45dda" />
     <Project Path="src/Transfer/MoneyBee.Transfer.Infrastructure/MoneyBee.Transfer.Infrastructure.csproj" Id="02ea672a-62a9-4e37-abd5-74f8cc39b21b" />
+  </Folder>
+  <Folder Name="/src/Transfer/Tests/">
+    <Project Path="src/Transfer/Tests/MoneyBee.Transfer.Test/MoneyBee.Transfer.Test.csproj" Id="84adddf2-97bc-4f91-a995-654e8314b24d" />
   </Folder>
 </Solution>
