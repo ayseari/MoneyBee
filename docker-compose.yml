@@ -55,7 +55,7 @@ services:
       - redis
       - kyc-service
     environment:
-      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__Default=Server=sqlserver,1433;Database=MoneyBee_Customer;User Id=sa;Password=moneybeeadmin123!;TrustServerCertificate=True
       - Redis__Connection=redis:6379
       - KycService__Url=http://kyc-service:80
@@ -75,7 +75,7 @@ services:
       - fraud-service
       - exchange-rate
     environment:
-      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__Default=Server=sqlserver,1433;Database=MoneyBee_Transfer;User Id=sa;Password=moneybeeadmin123!;TrustServerCertificate=True
       - Redis__Connection=redis:6379
       - CustomerApi__Url=http://customer-api:8080
@@ -93,7 +93,7 @@ services:
     image: bpnpay/fraud-service:latest
     container_name: fraud-service
     ports:
-      - "8081:80"
+      - "8081:8081"
     networks:
       - moneybee-network
     restart: unless-stopped
@@ -107,7 +107,7 @@ services:
     image: bpnpay/kyc-service:latest
     container_name: kyc-service
     ports:
-      - "8082:80"
+      - "8082:8082"
     networks:
       - moneybee-network
     restart: unless-stopped
@@ -121,7 +121,7 @@ services:
     image: bpnpay/exchange-rate-service:latest
     container_name: exchange-rate
     ports:
-      - "8083:80"
+      - "8083:8083"
     networks:
       - moneybee-network
     restart: unless-stopped

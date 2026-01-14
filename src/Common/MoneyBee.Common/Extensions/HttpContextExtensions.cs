@@ -1,6 +1,7 @@
 ﻿namespace MoneyBee.Common.Extensions
 {
     using Microsoft.AspNetCore.Http;
+    using System.Text.Json;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -17,7 +18,13 @@
 
             context.Response.StatusCode = statusCode;
 
-            return context.Response.WriteAsync(errorMessage);
+            var errorResponse = new
+            {
+                status = statusCode,
+                error = errorMessage
+            };
+
+            return context.Response.WriteAsync(JsonSerializer.Serialize(errorResponse));
         }
     }
 }

@@ -1,14 +1,15 @@
 ﻿namespace MoneyBee.External.Api.Client.Extensions
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using MoneyBee.Common.Handlers;
     using MoneyBee.Common.Models.Settings;
     using MoneyBee.External.Api.Client.Interfaces;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
     using Refit;
+    using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Provides extension methods for the IServiceCollection interface.
@@ -103,7 +104,8 @@
                 {
                     client.BaseAddress = new Uri(appSettings.ExchangeRateApiBaseUrl);
                     client.Timeout = TimeSpan.FromSeconds(30);
-                });
+                })
+                .AddHttpMessageHandler<ApiKeyHandler>(); ;
         }
     }
 }

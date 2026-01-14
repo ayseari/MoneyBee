@@ -51,8 +51,8 @@
                 return;
             }
             // API Key validation
-            var hashedApiKey = ApiKeyHelper.HashApiKey(apiKey);
-            var validKeys = await _cache.GetAsync<List<string>>(RedisConstants.ApiKeysCacheKey);
+            var hashedApiKey = ApiKeyHelper.HashApiKey(apiKey.ToString());
+            var validKeys = await _cache.GetAsync<List<string>>(RedisConstants.ApiKeysCacheKey) ?? new List<string>(); ;
             if (!validKeys.Contains(hashedApiKey))
             {
                 context.Response.StatusCode = 401;
