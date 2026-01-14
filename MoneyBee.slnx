@@ -1,0 +1,29 @@
+<Solution>
+  <Folder Name="/Solution Items/" />
+  <Folder Name="/src/" />
+  <Folder Name="/src/Auth/">
+    <Project Path="src/Auth/MoneyBee.Auth.Api/MoneyBee.Auth.Api.csproj" />
+    <Project Path="src/Auth/MoneyBee.Auth.Application/MoneyBee.Auth.Application.csproj" />
+    <Project Path="src/Auth/MoneyBee.Auth.Domain/MoneyBee.Auth.Domain.csproj" />
+    <Project Path="src/Auth/MoneyBee.Auth.Infrastructure/MoneyBee.Auth.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Common/">
+    <Project Path="src/Common/MoneyBee.Common/MoneyBee.Common.csproj" />
+  </Folder>
+  <Folder Name="/src/Customer/">
+    <Project Path="src/Customer/MoneyBee.Customer.Api.Client/MoneyBee.Customer.Api.Client.csproj" Id="a93788cc-1480-41b9-8fe0-6ae7f1d083c3" />
+    <Project Path="src/Customer/MoneyBee.Customer.Api/MoneyBee.Customer.Api.csproj" Id="e4c7a4f3-a972-4b6e-876e-d82922415d64" />
+    <Project Path="src/Customer/MoneyBee.Customer.Application/MoneyBee.Customer.Application.csproj" Id="5d2af406-789f-4837-ab0a-f0b7c0541d7d" />
+    <Project Path="src/Customer/MoneyBee.Customer.Domain/MoneyBee.Customer.Domain.csproj" Id="45063d54-4e8f-4b07-a076-019657eff7b1" />
+    <Project Path="src/Customer/MoneyBee.Customer.Infrastructure/MoneyBee.Customer.Infrastructure.csproj" Id="03cf8aa8-2935-4a63-9625-7eb7a2e49c4e" />
+  </Folder>
+  <Folder Name="/src/Infrastructure/">
+    <Project Path="src/Infrastructure/MoneyBee.External.Api.Client/MoneyBee.External.Api.Client.csproj" Id="cd503579-8cc8-421e-9464-65ecdc7c1f32" />
+  </Folder>
+  <Folder Name="/src/Transfer/">
+    <Project Path="src/Transfer/MoneyBee.Transfer.Api/MoneyBee.Transfer.Api.csproj" Id="b6c6e4d5-6171-4231-b246-0e5b2920e542" />
+    <Project Path="src/Transfer/MoneyBee.Transfer.Application/MoneyBee.Transfer.Application.csproj" Id="eb6e31f6-5655-49c3-b93e-df2929e52252" />
+    <Project Path="src/Transfer/MoneyBee.Transfer.Domain/MoneyBee.Transfer.Domain.csproj" Id="ba7bb295-1ceb-45c5-93c4-f12173a45dda" />
+    <Project Path="src/Transfer/MoneyBee.Transfer.Infrastructure/MoneyBee.Transfer.Infrastructure.csproj" Id="02ea672a-62a9-4e37-abd5-74f8cc39b21b" />
+  </Folder>
+</Solution>
