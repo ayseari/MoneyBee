@@ -38,7 +38,7 @@
         public async Task InvokeAsync(HttpContext context)
         {
             // Health check endpoint'i bypass
-            if (context.Request.Path.StartsWithSegments("/health") && context.Request.Method == HttpMethods.Get)
+            if ((context.Request.Path.StartsWithSegments("/health") || context.Request.Path.StartsWithSegments("/swagger")) && context.Request.Method == HttpMethods.Get)
             {
                 await _next(context);
                 return;
