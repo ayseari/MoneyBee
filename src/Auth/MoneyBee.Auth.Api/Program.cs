@@ -1,5 +1,6 @@
 using MoneyBee.Auth.Api.Extensions;
 using MoneyBee.Auth.Infrastructure.Extensions;
+using MoneyBee.Common.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
 

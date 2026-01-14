@@ -1,27 +1,31 @@
 ﻿namespace MoneyBee.Auth.Application.Services
 {
-    using System;
-    using System.Security.Cryptography;
-    using System.Text;
+    using Microsoft.Extensions.Caching.Distributed;
     using MoneyBee.Auth.Application.Models;
     using MoneyBee.Auth.Application.Services.Interfaces;
     using MoneyBee.Auth.Domain.Entities;
     using MoneyBee.Auth.Domain.Repositories;
+    using MoneyBee.Common.Caching;
+    using MoneyBee.Common.Constants;
+    using MoneyBee.Common.Helpers;
     using MoneyBee.Common.Models.Result;
+    using System;
+    using System.Security.Cryptography;
+    using System.Text;
 
     /// <summary>
     /// Api Key Service
     /// </summary>
-    public class ApiKeyService(IApiKeyRepository apiKeyRepository) : IApiKeyService
+    public class ApiKeyService(IApiKeyRepository apiKeyRepository, IRedisDistributedCacheService cacheService) : IApiKeyService
     {
         /// <summary>
         /// Generate Api Key Async
         /// </summary>
         public async Task<ServiceResult<ApiKeyResponse>> GenerateApiKeyAsync(CreateApiKeyRequest request)
         {
-            var apiKey = GenerateSecureApiKey();
+            var apiKey = ApiKeyHelper.GenerateSecureApiKey();
 
-            var hashedKey = HashApiKey(apiKey);
+            var hashedKey = ApiKeyHelper.HashApiKey(apiKey);
 
             var entity = new ApiKeyEntity
             {
@@ -37,13 +41,15 @@
             await apiKeyRepository.AddAsync(entity);
             await apiKeyRepository.SaveAsync();
 
+            await UpdateCache(new List<string> { hashedKey });
+
             var response = new ApiKeyResponse
             {
                 Id = entity.Id,
                 ApiKey = apiKey,
                 ClientName = entity.ClientName,
                 RateLimit = entity.RateLimit,
-                Message = "⚠️ Save this API key securely. It won't be shown again!"
+                Message = "Save this API key securely. It won't be shown again!"
             };
 
             return ServiceResult.Success(response);
@@ -54,7 +60,7 @@
         /// </summary>
         public async Task<ServiceResult<bool>> ValidateApiKeyAsync(string apiKey)
         {
-            var hashedKey = HashApiKey(apiKey);
+            var hashedKey = ApiKeyHelper.HashApiKey(apiKey);
 
             var entity = await apiKeyRepository.GetActiveApiKeyAsync(hashedKey);
 
@@ -75,6 +81,8 @@
         public async Task<ServiceResult<List<ApiKeyDetailResponse>>> GetAllApiKeysAsync()
         {
             var entities = await apiKeyRepository.GetAllAsync();
+
+            await UpdateCache(entities.Select(x => x.HashedKey).ToList());
 
             var response = entities.Select(e => new ApiKeyDetailResponse
             {
@@ -228,53 +236,18 @@
         }
 
         #region Private Methods
-        /// <summary>
-        /// Generate a new API key
-        /// </summary>
-        private static string GenerateSecureApiKey()
-        {
-            const string prefix = "mb_";
-            var bytes = new byte[32];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(bytes);
-            }
-            var base64Key = Convert.ToBase64String(bytes)
-                .Replace("+", "-")
-                .Replace("/", "_")
-                .Replace("=", "");
-            return $"{prefix}{base64Key}";
-        }
 
         /// <summary>
-        /// Hash API key using SHA256
+        /// Update Cache
         /// </summary>
-        private static string HashApiKey(string apiKey)
+        private async Task UpdateCache(List<string> apiKeys)
         {
-            var bytes = Encoding.UTF8.GetBytes(apiKey);
-            using var sha256 = SHA256.Create();
-            var hash = sha256.ComputeHash(bytes);
-            return Convert.ToHexString(hash).ToLowerInvariant();
+            var cacheKey = RedisConstants.ApiKeysCacheKey;
+            await cacheService.RemoveAsync(cacheKey);
+            var cachedApiKeys = await cacheService.GetAsync<List<string>>(cacheKey) ?? new List<string>();
+            cachedApiKeys.AddRange(apiKeys.Except(cachedApiKeys));
+            await cacheService.SetAsync(cacheKey, apiKeys);
         }
-
-        //private string GenerateSecureApiKey()
-        //{
-        //    // Cryptographically secure random
-        //    var bytes = new byte[32];
-        //    using var rng = RandomNumberGenerator.Create();
-        //    rng.GetBytes(bytes);
-
-        //    return $"mb_{Convert.ToBase64String(bytes).Replace("+", "").Replace("/", "").Substring(0, 40)}";
-        //    // Örnek: mb_xK9mP2nQ5rT8vW3yZ4aB6cD7eF9gH0jK1lM2
-        //}
-
-        //private string HashApiKey(string apiKey)
-        //{
-        //    using var sha256 = SHA256.Create();
-        //    var bytes = Encoding.UTF8.GetBytes(apiKey);
-        //    var hash = sha256.ComputeHash(bytes);
-        //    return Convert.ToBase64String(hash);
-        //}
         #endregion
     }
 }

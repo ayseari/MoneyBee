@@ -1,12 +1,16 @@
 ﻿namespace MoneyBee.Common.Middlewares
 {
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.Caching.Distributed;
+    using Microsoft.Extensions.Caching.Memory;
+    using Microsoft.Extensions.Configuration;
+    using MoneyBee.Common.Caching;
+    using MoneyBee.Common.Constants;
+    using MoneyBee.Common.Helpers;
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.Extensions.Caching.Memory;
-    using Microsoft.Extensions.Configuration;
 
     /// <summary>
     /// Api KEy auth middleware
@@ -15,11 +19,11 @@
     {
         private readonly RequestDelegate _next;
         private readonly IConfiguration _configuration;
-        private readonly IMemoryCache _cache;
+        private readonly IRedisDistributedCacheService _cache;
         private static readonly ConcurrentDictionary<string, Queue<DateTime>> _requestLog = new();
         private static readonly SemaphoreSlim _semaphore = new(1, 1);
 
-        public ApiKeyAuthMiddleware(RequestDelegate next, IConfiguration configuration, IMemoryCache cache)
+        public ApiKeyAuthMiddleware(RequestDelegate next, IConfiguration configuration, IRedisDistributedCacheService cache)
         {
             _next = next;
             _configuration = configuration;
@@ -46,10 +50,10 @@
                 await context.Response.WriteAsync("API Key is missing");
                 return;
             }
-
             // API Key validation
-            var validKeys = _configuration.GetSection("ApiKeys").Get<List<string>>() ?? new List<string>();
-            if (!validKeys.Contains(apiKey.ToString()))
+            var hashedApiKey = ApiKeyHelper.HashApiKey(apiKey);
+            var validKeys = await _cache.GetAsync<List<string>>(RedisConstants.ApiKeysCacheKey);
+            if (!validKeys.Contains(hashedApiKey))
             {
                 context.Response.StatusCode = 401;
                 await context.Response.WriteAsync("Invalid API Key");

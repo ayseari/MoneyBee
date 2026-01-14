@@ -1,3 +1,4 @@
+using MoneyBee.Common.Middlewares;
 using MoneyBee.Transfer.Api.Extensions;
 using MoneyBee.Transfer.Infrastructure.Extensions;
 
@@ -26,6 +27,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionMiddleware>();
+
+app.UseMiddleware<ApiKeyAuthMiddleware>();
 
 app.MapControllers();
 

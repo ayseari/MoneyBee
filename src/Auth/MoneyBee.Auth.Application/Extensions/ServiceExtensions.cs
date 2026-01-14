@@ -6,6 +6,7 @@
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using MoneyBee.Auth.Application.Services;
     using MoneyBee.Auth.Application.Services.Interfaces;
+    using MoneyBee.Common.Extensions;
 
     /// <summary>
     /// Provides extension methods for the IServiceCollection interface.
@@ -19,6 +20,7 @@
         public static void AddAuthApplication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAuthServices();
+            services.AddCommonServices(configuration);
         }
 
         /// <summary>

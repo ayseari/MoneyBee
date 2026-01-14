@@ -21,7 +21,7 @@
         public static void AddCustomerApplication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddCustomerServices();
-            services.AddCommonServices();
+            services.AddCommonServices(configuration);
         }
 
         /// <summary>

@@ -21,7 +21,7 @@
         public static void AddTransferApplication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransferServices();
-            services.AddCommonServices();
+            services.AddCommonServices(configuration);
         }
 
         /// <summary>
