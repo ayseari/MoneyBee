@@ -243,9 +243,11 @@
         private async Task UpdateCache(List<string> apiKeys)
         {
             var cacheKey = RedisConstants.ApiKeysCacheKey;
-            await cacheService.RemoveAsync(cacheKey);
+
             var cachedApiKeys = await cacheService.GetAsync<List<string>>(cacheKey) ?? new List<string>();
+
             cachedApiKeys.AddRange(apiKeys.Except(cachedApiKeys));
+
             await cacheService.SetAsync(cacheKey, apiKeys);
         }
         #endregion
